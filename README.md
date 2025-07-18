@@ -1,67 +1,128 @@
-# 🧠 Brain Tumor Classification using ResNet50
 
-This project focuses on classifying brain MRI images into four categories: **glioma**, **meningioma**, **notumor**, and **pituitary** using a fine-tuned ResNet50 deep learning model.
+# 🧠 Dual Input LSTM for Brain Tumor Classification
 
-## 📁 Dataset
+This project implements a deep learning model that classifies brain tumors using MRI images. It leverages a **Dual Input LSTM architecture**, taking both **grayscale images** and their **sketch-enhanced counterparts** as input to improve classification performance.
 
-- Dataset used: [`masoudnickparvar/brain-tumor-mri-dataset`](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset)
-- The dataset is organized into `Training/` and `Testing/` directories with class-wise subfolders.
+---
 
-## 📌 Key Features
+## 📌 Overview
 
-- Uses **transfer learning** with a pretrained ResNet50 model.
-- Custom classifier head with batch normalization and dropout for regularization.
-- Applies **early stopping** to prevent overfitting.
-- Visualizations include:
-  - Sample images
-  - Loss and accuracy curves
-  - Confusion matrix
+- **Dataset**: [Brain Tumor MRI Dataset](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset) (via `kagglehub`)
+- **Architecture**: Dual Bidirectional LSTM (grayscale + sketch)
+- **Framework**: PyTorch
+- **Task**: Multi-class classification of brain tumor types
 
-## 🛠️ Installation
+---
 
-Create a virtual environment (optional) and install dependencies:
+## 🗂️ Classes
 
-```bash
-pip install -r requirements.txt
-```
-
-## 🚀 How to Run
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/Rohitraj-21/Brain_Tumor_Classification.git
-   cd brain-tumor-classification
-   ```
-
-2. Download the dataset from Kaggle (automatically done using `kagglehub`).
-
-3. Run the Python script:
-
-   ```bash
-   python brain_tumor_classification.py
-   ```
-
-4. (Optional) Run the notebook:
-   Open `brain_tumor_classification.ipynb` in Google Colab or Jupyter.
-
-## 📈 Results
-
-- Achieves high accuracy on validation and test sets.
-- Plots accuracy/loss over epochs.
-- Displays confusion matrix for model evaluation.
-
-## 📦 Output
-
-- Trained model saved as: `best_model.pth`
-
-## 🧠 Classes
+The dataset consists of MRI scans categorized into 4 tumor types:
 
 - Glioma
 - Meningioma
-- No Tumor
 - Pituitary
+- No Tumor
 
-## 📚 Dependencies
+---
 
-See `requirements.txt`.
+## 🚀 Features
+
+- Dual-stream input (grayscale and sketch-enhanced images)
+- Bidirectional LSTMs for spatial sequence processing
+- Multi-layer dense classifier with dropout and batch normalization
+- Early stopping to prevent overfitting
+- Training metrics visualization (loss & accuracy plots)
+
+---
+
+## 🛠️ Setup
+
+
+### 🧩 Required Libraries
+
+- `torch`, `torchvision`
+- `kagglehub`
+- `Pillow`
+- `matplotlib`
+
+---
+
+## 📥 Dataset Download
+
+The dataset is automatically downloaded using [`kagglehub`](https://pypi.org/project/kagglehub/):
+
+```python
+import kagglehub
+path = kagglehub.dataset_download("masoudnickparvar/brain-tumor-mri-dataset")
+```
+
+Directory structure:
+
+```
+brain-tumor-mri-dataset/
+├── Training/
+│   ├── glioma/
+│   ├── meningioma/
+│   ├── pituitary/
+│   └── no_tumor/
+└── Testing/
+    ├── glioma/
+    ├── meningioma/
+    ├── pituitary/
+    └── no_tumor/
+```
+
+---
+
+## 🧠 Model Architecture
+
+### 📄 Dual LSTM Classifier
+
+- 2 Bidirectional LSTM branches: one for grayscale input, one for sketch input.
+- Last hidden states from both LSTMs are concatenated.
+- Passed through a deep fully connected classifier:
+
+```text
+Gray LSTM →           ↘
+                       ➜ Concatenate → Dense Layers → Output
+Sketch LSTM →         ↗
+```
+
+---
+
+## 🏋️ Training
+
+- **Loss Function**: CrossEntropyLoss
+- **Optimizer**: Adam (`lr=1e-4`)
+- **Early Stopping**: Patience = 5
+- **Epochs**: 20
+
+The model is trained using `train_model()` and best weights are saved to `best_model.pth`.
+
+---
+
+## 📊 Results Visualization
+
+Training and validation loss & accuracy are plotted using Matplotlib:
+
+<p align="center">
+  <img src="assets/loss_plot.png" alt="Loss plot" width="450"/>
+  <img src="assets/acc_plot.png" alt="Accuracy plot" width="450"/>
+</p>
+
+---
+
+## 📝 How to Run (Google Colab)
+
+1. Upload this notebook to [Google Colab](https://colab.research.google.com/).
+2. Run all cells sequentially.
+3. Download the best model (`best_model.pth`) if needed.
+
+---
+
+## 📎 Author
+
+**Rohit Raj**  
+[LinkedIn](https://www.linkedin.com/in/rohit-raj-082b3136b)  
+
+
