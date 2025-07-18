@@ -106,8 +106,7 @@ The model is trained using `train_model()` and best weights are saved to `best_m
 Training and validation loss & accuracy are plotted using Matplotlib:
 
 <p align="center">
-  <img src="assets/loss_plot.png" alt="Loss plot" width="450"/>
-  <img src="assets/acc_plot.png" alt="Accuracy plot" width="450"/>
+  <img src="assets/loss.png" alt="Loss plot" width="450"/>
 </p>
 
 ---
